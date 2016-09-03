@@ -24,7 +24,7 @@ class YYModelTests: XCTestCase {
     }
     
     func testYYModel() {
-        if let path = NSBundle.mainBundle().pathForResource("User", ofType: "json") {
+        if let path = NSBundle.mainBundle().pathForResource("UserTask", ofType: "json") {
             if let data = NSData(contentsOfFile: path) {
                 do {
                     let dict = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)

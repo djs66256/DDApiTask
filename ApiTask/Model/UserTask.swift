@@ -9,9 +9,10 @@
 import UIKit
 
 public class UserTask: ApiJsonYYModelTask<User> {
-
+    
     public override init() {
         super.init()
-        self.mockData("User.json")
+//        self.mockData("User.json")
+        self.mockData()
     }
 }

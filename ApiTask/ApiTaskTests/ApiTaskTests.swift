@@ -17,7 +17,7 @@ class DDRequestTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let path = NSBundle.mainBundle().pathForResource("User", ofType: "json")
+        let path = NSBundle.mainBundle().pathForResource("UserTask", ofType: "json")
         let data = NSData(contentsOfFile: path!)
         let dict = try? NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
         self.json = JSON(dict!)

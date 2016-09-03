@@ -17,7 +17,6 @@
 		65056EC51D7B3A8B004A36C5 /* ApiTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EC11D7B3A8B004A36C5 /* ApiTask.swift */; };
 		65056EC81D7B3A97004A36C5 /* ApiTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EC61D7B3A97004A36C5 /* ApiTaskTests.swift */; };
 		65056EC91D7B3A97004A36C5 /* YYModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EC71D7B3A97004A36C5 /* YYModelTests.swift */; };
-		65056ECE1D7B3AA6004A36C5 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 65056ECB1D7B3AA6004A36C5 /* User.json */; };
 		65056ECF1D7B3AA6004A36C5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056ECC1D7B3AA6004A36C5 /* User.swift */; };
 		65056ED01D7B3AA6004A36C5 /* UserTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056ECD1D7B3AA6004A36C5 /* UserTask.swift */; };
 		65056ED11D7B3B57004A36C5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056ECC1D7B3AA6004A36C5 /* User.swift */; };
@@ -25,7 +24,7 @@
 		65056ED31D7B3BFF004A36C5 /* ApiJsonModelTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EBF1D7B3A8B004A36C5 /* ApiJsonModelTask.swift */; };
 		65056ED41D7B3C02004A36C5 /* ApiJsonYYModelTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EC01D7B3A8B004A36C5 /* ApiJsonYYModelTask.swift */; };
 		65056ED51D7B3C02004A36C5 /* ApiTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65056EC11D7B3A8B004A36C5 /* ApiTask.swift */; };
-		65056ED61D7B3C2D004A36C5 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 65056ECB1D7B3AA6004A36C5 /* User.json */; };
+		65056ED81D7B3E2E004A36C5 /* UserTask.json in Resources */ = {isa = PBXBuildFile; fileRef = 65056ED71D7B3E2E004A36C5 /* UserTask.json */; };
 		68783D6630D6F6E89F2C195B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D81D0CE9400A8D9CDA5D85B7 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,9 +54,9 @@
 		65056EC21D7B3A8B004A36C5 /* ApiTask-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ApiTask-Bridging-Header.h"; sourceTree = "<group>"; };
 		65056EC61D7B3A97004A36C5 /* ApiTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTaskTests.swift; sourceTree = "<group>"; };
 		65056EC71D7B3A97004A36C5 /* YYModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YYModelTests.swift; sourceTree = "<group>"; };
-		65056ECB1D7B3AA6004A36C5 /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
 		65056ECC1D7B3AA6004A36C5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		65056ECD1D7B3AA6004A36C5 /* UserTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTask.swift; sourceTree = "<group>"; };
+		65056ED71D7B3E2E004A36C5 /* UserTask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserTask.json; sourceTree = "<group>"; };
 		AC005763279B1E9EA753FD1B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CD2711622247AA740552DA3A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D81D0CE9400A8D9CDA5D85B7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +150,7 @@
 		65056ECA1D7B3AA6004A36C5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				65056ECB1D7B3AA6004A36C5 /* User.json */,
+				65056ED71D7B3E2E004A36C5 /* UserTask.json */,
 				65056ECC1D7B3AA6004A36C5 /* User.swift */,
 				65056ECD1D7B3AA6004A36C5 /* UserTask.swift */,
 			);
@@ -252,10 +251,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65056ED61D7B3C2D004A36C5 /* User.json in Resources */,
 				65056EA91D7B39D6004A36C5 /* LaunchScreen.storyboard in Resources */,
 				65056EA61D7B39D6004A36C5 /* Assets.xcassets in Resources */,
 				65056EA41D7B39D6004A36C5 /* Main.storyboard in Resources */,
+				65056ED81D7B3E2E004A36C5 /* UserTask.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +262,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65056ECE1D7B3AA6004A36C5 /* User.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
