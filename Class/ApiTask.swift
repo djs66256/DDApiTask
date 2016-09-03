@@ -30,7 +30,7 @@ public class ApiTask: NSObject {
     
     func buildURL() -> NSURL? {
         if mock && mockPath != nil {
-            return NSURL(fileURLWithPath: mockPath!, relativeToURL: mockBaseURL)
+            return NSURL(string: mockPath!, relativeToURL: mockBaseURL)
         }
         else {
             if let baseURL = self.baseURL {

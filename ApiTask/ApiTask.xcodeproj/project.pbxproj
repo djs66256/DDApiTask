@@ -51,12 +51,12 @@
 		65056EBF1D7B3A8B004A36C5 /* ApiJsonModelTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiJsonModelTask.swift; sourceTree = "<group>"; };
 		65056EC01D7B3A8B004A36C5 /* ApiJsonYYModelTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiJsonYYModelTask.swift; sourceTree = "<group>"; };
 		65056EC11D7B3A8B004A36C5 /* ApiTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTask.swift; sourceTree = "<group>"; };
-		65056EC21D7B3A8B004A36C5 /* ApiTask-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ApiTask-Bridging-Header.h"; sourceTree = "<group>"; };
 		65056EC61D7B3A97004A36C5 /* ApiTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTaskTests.swift; sourceTree = "<group>"; };
 		65056EC71D7B3A97004A36C5 /* YYModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YYModelTests.swift; sourceTree = "<group>"; };
 		65056ECC1D7B3AA6004A36C5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		65056ECD1D7B3AA6004A36C5 /* UserTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTask.swift; sourceTree = "<group>"; };
 		65056ED71D7B3E2E004A36C5 /* UserTask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserTask.json; sourceTree = "<group>"; };
+		654AE3271D7B4FD600224AFA /* ApiTask-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ApiTask-Bridging-Header.h"; sourceTree = "<group>"; };
 		AC005763279B1E9EA753FD1B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CD2711622247AA740552DA3A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D81D0CE9400A8D9CDA5D85B7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +96,7 @@
 				65056EBE1D7B3A8B004A36C5 /* Class */,
 				65056ECA1D7B3AA6004A36C5 /* Model */,
 				65056E9D1D7B39D6004A36C5 /* ApiTask */,
+				654AE3271D7B4FD600224AFA /* ApiTask-Bridging-Header.h */,
 				65056EB21D7B39D6004A36C5 /* ApiTaskTests */,
 				65056E9C1D7B39D6004A36C5 /* Products */,
 				24AC6D7B1BB1ADA8A3847216 /* Pods */,
@@ -141,7 +142,6 @@
 				65056EBF1D7B3A8B004A36C5 /* ApiJsonModelTask.swift */,
 				65056EC01D7B3A8B004A36C5 /* ApiJsonYYModelTask.swift */,
 				65056EC11D7B3A8B004A36C5 /* ApiTask.swift */,
-				65056EC21D7B3A8B004A36C5 /* ApiTask-Bridging-Header.h */,
 			);
 			name = Class;
 			path = ../Class;
@@ -466,7 +466,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.djs66256.ApiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "../class/ApiTask-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ApiTask-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -479,7 +479,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.djs66256.ApiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "../class/ApiTask-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ApiTask-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -492,6 +492,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.djs66256.ApiTaskTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ApiTask-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApiTask.app/ApiTask";
 			};
 			name = Debug;
@@ -505,6 +506,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.djs66256.ApiTaskTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ApiTask-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApiTask.app/ApiTask";
 			};
 			name = Release;
