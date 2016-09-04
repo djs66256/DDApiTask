@@ -8,7 +8,10 @@
 
 import XCTest
 import SwiftyJSON
+import DDFileCache
 @testable import ApiTask
+
+let config = ApiTaskConfig(serializer: ApiJsonModelSerializer<User>(), cache: DDCache(name: "test"))
 
 class DDRequestTests: XCTestCase {
     
@@ -29,8 +32,8 @@ class DDRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let exception = self.expectationWithDescription("")
-        UserTask().responseModel { (result) in
+        let exception = self.expectationWithDescription("test request")
+        UserTask(config: config).buildMock(true).responseModel { (result) in
             switch result {
             case .Success(let user):
                 XCTAssert(user.id == self.json?["data"]["id"].string, "")
@@ -50,4 +53,25 @@ class DDRequestTests: XCTestCase {
         }
     }
     
+    func testRequestCache() {
+        let exception = self.expectationWithDescription("test cache")
+        UserTask(config: config).clearCache().buildCache(true).buildMock(true).responseModel( {(result) in
+            UserTask(config: config).buildCache(true).cacheModel({ (user) in
+                XCTAssert(user.id == self.json?["data"]["id"].string, "")
+                XCTAssert(user.gender == Gender(rawValue: self.json?["data"]["gender"].int ?? -1), "")
+                XCTAssert(user.name == self.json?["data"]["name"].string, "")
+                
+                UserTask(config: config).clearCache().buildCache(true).cacheModel({ (user) in
+                    XCTFail("shoud clear cache")
+                })
+                exception.fulfill()
+            })
+            }
+        )
+        self.waitForExpectationsWithTimeout(10) { (error) in
+            if let error = error {
+                XCTFail(error.localizedDescription)
+            }
+        }
+    }
 }

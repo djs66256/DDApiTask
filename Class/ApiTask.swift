@@ -9,61 +9,101 @@
 import UIKit
 import Alamofire
 
+public enum Method: String {
+    case OPTIONS, GET, HEAD, POST, PUT, PATCH, DELETE, TRACE, CONNECT
+}
+
 public class ApiTask: NSObject {
-    public var method: Alamofire.Method = .GET
-    public var parameters: [String: AnyObject]?
+    // You can also override the getter to dynamic build it!
+    public var method: Method = .GET
+    public var parameters = [String: AnyObject]()
     public var parameterEncoding: Alamofire.ParameterEncoding = .URL
-    public var headers: [String: String]?
+    public var headers = [String: String]()
     public var baseURL: NSURL?
     public var path: String = ""
     
     // MARK: - MOCK
     public var mock: Bool = false
-    public var mockBaseURL = NSBundle.mainBundle().bundleURL
+    public var baseMockURL = NSBundle.mainBundle().bundleURL
     public var mockPath: String?
     
-    var request: Request?
+    var request: Request? {
+        get {
+            if let url = self.URL {
+                return Alamofire.request(Alamofire.Method(rawValue:self.method.rawValue)!, url, parameters: self.parameters, encoding: self.parameterEncoding, headers: self.headers)
+            }
+            else {
+                return nil
+            }
+        }
+    }
     
     public override init() {
         super.init()
     }
     
-    func buildURL() -> NSURL? {
-        if mock && mockPath != nil {
-            return NSURL(string: mockPath!, relativeToURL: mockBaseURL)
-        }
-        else {
-            if let baseURL = self.baseURL {
-                let url = NSURL(string: self.path, relativeToURL: baseURL)
-                return url
+    private var URL: NSURL? {
+        get {
+            if mock && mockPath != nil {
+                return NSURL(string: mockPath!, relativeToURL: baseMockURL)
             }
             else {
-                return NSURL()
+                if let baseURL = self.baseURL {
+                    let url = NSURL(string: self.path, relativeToURL: baseURL)
+                    return url
+                }
+                else {
+                    return NSURL()
+                }
             }
         }
     }
     
-    func buildRequest() -> Request? {
-        if let url = self.buildURL() {
-            request = Alamofire.request(self.method, url, parameters: self.parameters, encoding: self.parameterEncoding, headers: self.headers)
-            return request
+    public func buildMethod(method: Method) -> Self {
+        self.method = method
+        return self
+    }
+    
+    public func buildParameters(parameters: [String: AnyObject]?) -> Self {
+        if let parameters = parameters {
+            for (key, value) in parameters {
+                buildParameter(key, value)
+            }
         }
-        return nil
+        return self
     }
     
-    
-}
-
-public extension ApiTask {
-    
-    public func mockData() -> Self {
-        let path = "\(self.dynamicType).json"
-        return mockData(path)
+    public func buildParameter(key: String, _ value: AnyObject) -> Self {
+        self.parameters[key] = value
+        return self
     }
     
-    public func mockData(mockPath: String) -> Self {
-        self.mock = true
-        self.mockPath = mockPath
+    public func buildHeaders(headers: [String: String]?) -> Self {
+        if let headers = headers {
+            for (key, value) in headers {
+                buildHeader(key, value)
+            }
+        }
+        return self
+    }
+    
+    public func buildHeader(key: String, _ value: String) -> Self {
+        self.headers[key] = value
+        return self
+    }
+    
+    public func buildURL(path: String, baseURL: NSURL) -> Self {
+        self.path = path
+        self.baseURL = baseURL
+        return self
+    }
+    
+    public func buildMock(mock: Bool, mockPath: String? = nil, baseMockURL: NSURL? = nil) -> Self {
+        self.mock = mock
+        self.mockPath = mockPath ?? "\(self.dynamicType).json"
+        if let baseMockURL = baseMockURL {
+            self.baseMockURL = baseMockURL
+        }
         return self
     }
 }

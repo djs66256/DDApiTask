@@ -67,6 +67,10 @@ public class ApiJsonModelSerializer<ModelType: NSObject>: NSObject, ModelSeriali
 
 public class ApiJsonYYModelTask<T: NSObject>: ApiJsonModelTask<T, ApiJsonModelSerializer<T>> {
     public init() {
-        super.init(serializer: ApiJsonModelSerializer<T>())
+        super.init(config: ApiTaskDefaultYYConfig())
+    }
+    
+    public override init(config: ApiTaskConfig<T, ApiJsonModelSerializer<T>>) {
+        super.init(config: config)
     }
 }

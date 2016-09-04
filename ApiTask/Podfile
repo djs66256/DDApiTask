@@ -1,4 +1,5 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source "https://github.com/djs66256/DDDevelopCocoaPodsRepos.git"
+source "https://github.com/CocoaPods/Specs.git"
 platform :ios, '9.0'
 use_frameworks!
 
@@ -6,4 +7,5 @@ pod "Alamofire", '~> 3.4'
 pod "YYModel", '~>1.0.4'
 pod "SwiftyJSON"
 
+pod "DDFileCache"
 

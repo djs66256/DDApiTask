@@ -12,7 +12,9 @@ public class UserTask: ApiJsonYYModelTask<User> {
     
     public override init() {
         super.init()
-//        self.mockData("User.json")
-        self.mockData()
+    }
+    
+    public override init(config: ApiTaskConfig<User, ApiJsonModelSerializer<User>>) {
+        super.init(config: config)
     }
 }

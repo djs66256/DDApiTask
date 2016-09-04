@@ -1,15 +1,24 @@
 PODS:
   - Alamofire (3.4.2)
+  - DDFileCache (0.0.2):
+    - DDLevelDB (~> 2.2.0)
+  - DDLevelDB (2.2.1):
+    - leveldb-library (~> 1.18.2)
+  - leveldb-library (1.18.2)
   - SwiftyJSON (2.3.2)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
   - Alamofire (~> 3.4)
+  - DDFileCache
   - SwiftyJSON
   - YYModel (~> 1.0.4)
 
 SPEC CHECKSUMS:
   Alamofire: 6aa33201d20d069e1598891cf928883ff1888c7a
+  DDFileCache: ea040257f606b84b81579807161f2f0e0d9c66ca
+  DDLevelDB: 29d4e58686dd0933d377b3ba7e97123f7a9dbb8a
+  leveldb-library: ef0453697c0fda3a9e550e5650e52976e6724548
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
