@@ -79,7 +79,11 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
     }
     
     public func responseModel<M:ModelSerializer where M.ModelType == T>(serializer: M, result: (Result<T>) -> Void) -> Self {
-        if let request = request {
+        let (validated, error) = validate()
+        if !validated, let error = error {
+            result(Result.Failure(error))
+        }
+        else if let request = request {
             request.responseJSON(completionHandler: {(response: Response<AnyObject, NSError>) in
                 switch response.result {
                 case .Success(let json):

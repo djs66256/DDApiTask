@@ -106,4 +106,22 @@ public class ApiTask: NSObject {
         }
         return self
     }
+    
+    public func validate() -> (Bool, NSError?) {
+        let (validated, errStr) = validateString()
+        if validated {
+                return (validated, nil)
+            }
+        else if let str = errStr {
+            return (false, NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: str]))
+        }
+        else {
+            return (false, NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "未知错误"]))
+        }
+    }
+    
+    public func validateString() -> (Bool, String?) {
+        return (true, nil)
+    }
+    
 }
