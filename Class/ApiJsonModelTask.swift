@@ -30,6 +30,14 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
     public var localCacheEnable = false
     public var expireTimeInterval: NSTimeInterval = 24*3600
     
+    public var cacheKey: String? {
+        get {
+            let data = try? NSJSONSerialization.dataWithJSONObject(self.parameters ?? [:], options: NSJSONWritingOptions(rawValue: 0))
+            let str = "\(self.path) => \(data ?? "")"
+            return str
+        }
+    }
+    
     public init(config: ApiTaskConfig<T, M>) {
         self.config = config
     }
@@ -41,7 +49,7 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
     }
     
     public func clearCache() -> Self {
-        if let key = cacheKey() {
+        if let key = cacheKey {
             config.cache?.removeObjectForKey(key)
         }
         return self
@@ -50,7 +58,7 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
     // need buildCache(true)
     public func cacheModel(result: (T)->Void) -> Self {
         if localCacheEnable && method == .GET {
-            if let key = cacheKey(), data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
+            if let key = cacheKey, data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
                 let r = config.serializer.modelSerialize(data)
                 switch r {
                 case .Success(let model):
@@ -65,7 +73,7 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
     
     public func cacheModelArray(result: ([T])->Void) -> Self {
         if localCacheEnable && method == .GET {
-            if let key = cacheKey(), data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
+            if let key = cacheKey, data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
                 let r = config.serializer.modelSerialize(data)
                 switch r {
                 case .SuccessArray(let model):
@@ -89,7 +97,7 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
                 case .Success(let json):
                     if let dict = json as? [NSObject: NSObject] {
                         if self.localCacheEnable && self.method == .GET {
-                            if let key = self.cacheKey() {
+                            if let key = self.cacheKey {
                                 self.config.cache?.setObject(dict, forKey: key, timeInterval: self.expireTimeInterval)
                             }
                         }
@@ -115,9 +123,4 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         return responseModel(config.serializer, result: result)
     }
     
-    private func cacheKey() -> String? {
-        let data = try? NSJSONSerialization.dataWithJSONObject(self.parameters ?? [:], options: NSJSONWritingOptions(rawValue: 0))
-        let str = "\(self.path) => \(data ?? "")"
-        return str
-    }
 }
