@@ -14,12 +14,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         ApiJsonYYModelTask<User>()
-            .buildMethod(.POST)
-            .buildURL("user", baseURL: NSURL(string: "http://www.baidu.com")!)
-            .buildParameter("id", "12")
-            .buildParameters(["key": "value"])
-            .buildHeaders(["Authorization": "xxfwqwefq2efiwefo"])
-            .buildCache(true)   // 本地缓存
+            .method(.POST)
+            .URL("user", baseURL: NSURL(string: "http://www.baidu.com")!)
+            .parameter("id", "12")
+            .parameters(["key": "value"])
+            .headers(["Authorization": "xxfwqwefq2efiwefo"])
+            .cache(true)   // 本地缓存
             .cacheModel({ (user) in     // 获取本地缓存
                 NSLog(user.description)
             })

@@ -59,46 +59,46 @@ public class ApiTask: NSObject {
         }
     }
     
-    public func buildMethod(method: Method) -> Self {
+    public func method(method: Method) -> Self {
         self.method = method
         return self
     }
     
-    public func buildParameters(parameters: [String: AnyObject]?) -> Self {
+    public func parameters(parameters: [String: AnyObject]?) -> Self {
         if let parameters = parameters {
             for (key, value) in parameters {
-                buildParameter(key, value)
+                parameter(key, value)
             }
         }
         return self
     }
     
-    public func buildParameter(key: String, _ value: AnyObject) -> Self {
+    public func parameter(key: String, _ value: AnyObject) -> Self {
         self.parameters[key] = value
         return self
     }
     
-    public func buildHeaders(headers: [String: String]?) -> Self {
+    public func headers(headers: [String: String]?) -> Self {
         if let headers = headers {
             for (key, value) in headers {
-                buildHeader(key, value)
+                header(key, value)
             }
         }
         return self
     }
     
-    public func buildHeader(key: String, _ value: String) -> Self {
+    public func header(key: String, _ value: String) -> Self {
         self.headers[key] = value
         return self
     }
     
-    public func buildURL(path: String, baseURL: NSURL) -> Self {
+    public func URL(path: String, baseURL: NSURL) -> Self {
         self.path = path
         self.baseURL = baseURL
         return self
     }
     
-    public func buildMock(mock: Bool, mockPath: String? = nil, baseMockURL: NSURL? = nil) -> Self {
+    public func mock(mock: Bool, mockPath: String? = nil, baseMockURL: NSURL? = nil) -> Self {
         self.mock = mock
         self.mockPath = mockPath ?? "\(self.dynamicType).json"
         if let baseMockURL = baseMockURL {

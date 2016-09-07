@@ -42,7 +42,7 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         self.config = config
     }
     
-    public func buildCache(enable: Bool, timeInterval: NSTimeInterval = 24*3600) -> Self {
+    public func cache(enable: Bool, timeInterval: NSTimeInterval = 24*3600) -> Self {
         self.localCacheEnable = enable
         self.expireTimeInterval = timeInterval
         return self

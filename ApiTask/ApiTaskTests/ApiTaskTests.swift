@@ -33,7 +33,7 @@ class DDRequestTests: XCTestCase {
     
     func testRequest() {
         let exception = self.expectationWithDescription("test request")
-        UserTask(config: config).buildMock(true).responseModel { (result) in
+        UserTask(config: config).mock(true).responseModel { (result) in
             switch result {
             case .Success(let user):
                 XCTAssert(user.id == self.json?["data"]["id"].string, "")
@@ -55,13 +55,13 @@ class DDRequestTests: XCTestCase {
     
     func testRequestCache() {
         let exception = self.expectationWithDescription("test cache")
-        UserTask(config: config).clearCache().buildCache(true).buildMock(true).responseModel( {(result) in
-            UserTask(config: config).buildCache(true).cacheModel({ (user) in
+        UserTask(config: config).clearCache().cache(true).mock(true).responseModel( {(result) in
+            UserTask(config: config).cache(true).cacheModel({ (user) in
                 XCTAssert(user.id == self.json?["data"]["id"].string, "")
                 XCTAssert(user.gender == Gender(rawValue: self.json?["data"]["gender"].int ?? -1), "")
                 XCTAssert(user.name == self.json?["data"]["name"].string, "")
                 
-                UserTask(config: config).clearCache().buildCache(true).cacheModel({ (user) in
+                UserTask(config: config).clearCache().cache(true).cacheModel({ (user) in
                     XCTFail("shoud clear cache")
                 })
                 exception.fulfill()
@@ -77,7 +77,7 @@ class DDRequestTests: XCTestCase {
     
     func testBatchRequest() {
         let exception = self.expectationWithDescription("batch request error")
-        ApiBatchTask(tasks: [UserTask(config: config).buildMock(true), UserTask(config: config).buildMock(true)]).responseTasks { (result) in
+        ApiBatchTask(tasks: [UserTask(config: config).mock(true), UserTask(config: config).mock(true)]).responseTasks { (result) in
             switch result {
             case .Success(let tasks):
                 if tasks.count == 2 {
@@ -115,7 +115,7 @@ class DDRequestTests: XCTestCase {
     
     func testChainRequest() {
         let exception = self.expectationWithDescription("batch request error")
-        ApiChainTask(tasks: [UserTask(config: config).buildMock(true), UserTask(config: config).buildMock(true)]).responseTasks { (result) in
+        ApiChainTask(tasks: [UserTask(config: config).mock(true), UserTask(config: config).mock(true)]).responseTasks { (result) in
             switch result {
             case .Success(let tasks):
                 if tasks.count == 2 {
