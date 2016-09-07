@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ApiTask"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "A networking framework base on Alamofire."
 
   s.description  = <<-DESC
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   # s.tvos.deployment_target = "9.0"
 
 
-  s.source       = { :git => "https://github.com/djs66256/DDApiTask.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/djs66256/DDApiTask.git", :tag => "0.0.3" }
 
   s.source_files  = "Class", "Class/**/*.{swift}"
   s.exclude_files = "Classes/Exclude"
