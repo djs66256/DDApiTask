@@ -27,6 +27,8 @@
 		65056ED81D7B3E2E004A36C5 /* UserTask.json in Resources */ = {isa = PBXBuildFile; fileRef = 65056ED71D7B3E2E004A36C5 /* UserTask.json */; };
 		655300011D7C09C600D9FDDB /* ApiCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658CE7861D7B7E34005FEA0E /* ApiCacheProtocol.swift */; };
 		655300021D7C09D100D9FDDB /* ApiTaskConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658CE7881D7B7EA7005FEA0E /* ApiTaskConfig.swift */; };
+		655300301D7F340C00D9FDDB /* ApiGroupTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6553002F1D7F340C00D9FDDB /* ApiGroupTask.swift */; };
+		655300311D8072F500D9FDDB /* ApiGroupTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6553002F1D7F340C00D9FDDB /* ApiGroupTask.swift */; };
 		658CE7871D7B7E34005FEA0E /* ApiCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658CE7861D7B7E34005FEA0E /* ApiCacheProtocol.swift */; };
 		658CE7891D7B7EA7005FEA0E /* ApiTaskConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658CE7881D7B7EA7005FEA0E /* ApiTaskConfig.swift */; };
 		68783D6630D6F6E89F2C195B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D81D0CE9400A8D9CDA5D85B7 /* Pods.framework */; };
@@ -61,6 +63,7 @@
 		65056ECD1D7B3AA6004A36C5 /* UserTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTask.swift; sourceTree = "<group>"; };
 		65056ED71D7B3E2E004A36C5 /* UserTask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserTask.json; sourceTree = "<group>"; };
 		654AE3271D7B4FD600224AFA /* ApiTask-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ApiTask-Bridging-Header.h"; sourceTree = "<group>"; };
+		6553002F1D7F340C00D9FDDB /* ApiGroupTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiGroupTask.swift; sourceTree = "<group>"; };
 		658CE7861D7B7E34005FEA0E /* ApiCacheProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiCacheProtocol.swift; sourceTree = "<group>"; };
 		658CE7881D7B7EA7005FEA0E /* ApiTaskConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTaskConfig.swift; sourceTree = "<group>"; };
 		AC005763279B1E9EA753FD1B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 				65056EC11D7B3A8B004A36C5 /* ApiTask.swift */,
 				658CE7861D7B7E34005FEA0E /* ApiCacheProtocol.swift */,
 				658CE7881D7B7EA7005FEA0E /* ApiTaskConfig.swift */,
+				6553002F1D7F340C00D9FDDB /* ApiGroupTask.swift */,
 			);
 			name = Class;
 			path = ../Class;
@@ -336,6 +340,7 @@
 				65056EC41D7B3A8B004A36C5 /* ApiJsonYYModelTask.swift in Sources */,
 				65056E9F1D7B39D6004A36C5 /* AppDelegate.swift in Sources */,
 				65056EC31D7B3A8B004A36C5 /* ApiJsonModelTask.swift in Sources */,
+				655300301D7F340C00D9FDDB /* ApiGroupTask.swift in Sources */,
 				65056EC51D7B3A8B004A36C5 /* ApiTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,6 +352,7 @@
 				65056EC81D7B3A97004A36C5 /* ApiTaskTests.swift in Sources */,
 				655300011D7C09C600D9FDDB /* ApiCacheProtocol.swift in Sources */,
 				65056ED51D7B3C02004A36C5 /* ApiTask.swift in Sources */,
+				655300311D8072F500D9FDDB /* ApiGroupTask.swift in Sources */,
 				655300021D7C09D100D9FDDB /* ApiTaskConfig.swift in Sources */,
 				65056EC91D7B3A97004A36C5 /* YYModelTests.swift in Sources */,
 				65056ECF1D7B3AA6004A36C5 /* User.swift in Sources */,

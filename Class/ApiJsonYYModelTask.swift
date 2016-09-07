@@ -20,13 +20,13 @@ import YYModel
 public class ApiJsonModelSerializer<ModelType: NSObject>: NSObject, ModelSerializer {
     public var successCodeRange: Range<Int> = 0..<1
     
-    public func modelSerialize(dict: [NSObject : NSObject]) -> Result<ModelType> {
+    public func modelSerialize(dict: [NSObject : NSObject]) -> ApiResult<ModelType> {
         let json = SwiftyJSON.JSON(dict)
         if let code = json["code"].int {
             if successCodeRange.contains(code) {
                 if let dictModel = json["data"].dictionaryObject {
                     if let model = ModelType.yy_modelWithJSON(dictModel) {
-                        return Result.Success(model)
+                        return ApiResult.Success(model)
                     }
                     else {
                         return buildDataError()
@@ -34,7 +34,7 @@ public class ApiJsonModelSerializer<ModelType: NSObject>: NSObject, ModelSeriali
                 }
                 else if let arrayModel = json["data"].arrayObject {
                     if let array = NSArray.yy_modelArrayWithClass(ModelType.self, json: arrayModel) as? [ModelType] {
-                        return Result.SuccessArray(array)
+                        return ApiResult.SuccessArray(array)
                     }
                     else {
                         return buildDataError()
@@ -47,7 +47,7 @@ public class ApiJsonModelSerializer<ModelType: NSObject>: NSObject, ModelSeriali
             else {
                 if let message = json["message"].string {
                     let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey:message])
-                    return Result.Failure(error)
+                    return ApiResult.Failure(error)
                 }
                 else {
                     return buildDataError()
@@ -59,9 +59,9 @@ public class ApiJsonModelSerializer<ModelType: NSObject>: NSObject, ModelSeriali
         }
     }
     
-    private func buildDataError() -> Result<ModelType> {
+    private func buildDataError() -> ApiResult<ModelType> {
         let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "数据结构错误"])
-        return Result.Failure(error)
+        return ApiResult.Failure(error)
     }
 }
 

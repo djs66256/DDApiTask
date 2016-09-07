@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-public enum Result<T> {
+public enum ApiResult<T> {
     case Success(T)
     case SuccessArray([T])
     case Failure(NSError)
@@ -18,7 +18,7 @@ public enum Result<T> {
 public protocol ModelSerializer {
     associatedtype ModelType
     
-    func modelSerialize(json: [NSObject: NSObject]) -> Result<ModelType>
+    func modelSerialize(json: [NSObject: NSObject]) -> ApiResult<ModelType>
 }
 
 public let ApiTaskErrorDomain = "com.api.task"
@@ -86,10 +86,10 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         return self
     }
     
-    public func responseModel<M:ModelSerializer where M.ModelType == T>(serializer: M, result: (Result<T>) -> Void) -> Self {
+    public func responseModel<M:ModelSerializer where M.ModelType == T>(serializer: M, result: (ApiResult<T>) -> Void) -> Self {
         let (validated, error) = validate()
         if !validated, let error = error {
-            result(Result.Failure(error))
+            result(.Failure(error))
         }
         else if let request = request {
             request.responseJSON(completionHandler: {(response: Response<AnyObject, NSError>) in
@@ -105,21 +105,21 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
                     }
                     else {
                         let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "数据结构错误"])
-                        result(Result.Failure(error))
+                        result(.Failure(error))
                     }
                 case .Failure(let error):
-                    result(Result.Failure(error))
+                    result(.Failure(error))
                 }
             })
         }
         else {
             let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSURLLocalizedLabelKey: "未构造请求"])
-            result(Result.Failure(error))
+            result(.Failure(error))
         }
         return self
     }
     
-    public func responseModel(result: (Result<T>) -> Void) -> Self {
+    public func responseModel(result: (ApiResult<T>) -> Void) -> Self {
         return responseModel(config.serializer, result: result)
     }
     

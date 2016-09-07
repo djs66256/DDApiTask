@@ -74,4 +74,80 @@ class DDRequestTests: XCTestCase {
             }
         }
     }
+    
+    func testBatchRequest() {
+        let exception = self.expectationWithDescription("batch request error")
+        ApiBatchTask(tasks: [UserTask(config: config).buildMock(true), UserTask(config: config).buildMock(true)]).responseTasks { (result) in
+            switch result {
+            case .Success(let tasks):
+                if tasks.count == 2 {
+                    if let task1 = tasks[0] as? UserTask, let task2 = tasks[1] as? UserTask {
+                        var b1 = false
+                        var b2 = false
+                        task1.responseModel({ (result) in
+                            b1 = true
+                            
+                            if b2 {
+                                exception.fulfill()
+                            }
+                        })
+                        task2.responseModel({ (result) in
+                            b2 = true
+                            
+                            if b1 {
+                                exception.fulfill()
+                            }
+                        })
+                        return
+                    }
+                }
+                XCTAssert(false, "tasks complete error")
+            case .Failure :
+                XCTAssert(false, "tasks complete error")
+            }
+        }
+        self.waitForExpectationsWithTimeout(10) { (error) in
+            if let error = error {
+                XCTFail(error.localizedDescription)
+            }
+        }
+    }
+    
+    func testChainRequest() {
+        let exception = self.expectationWithDescription("batch request error")
+        ApiChainTask(tasks: [UserTask(config: config).buildMock(true), UserTask(config: config).buildMock(true)]).responseTasks { (result) in
+            switch result {
+            case .Success(let tasks):
+                if tasks.count == 2 {
+                    if let task1 = tasks[0] as? UserTask, let task2 = tasks[1] as? UserTask {
+                        var b1 = false
+                        var b2 = false
+                        task1.responseModel({ (result) in
+                            b1 = true
+                            
+                            if b2 {
+                                exception.fulfill()
+                            }
+                        })
+                        task2.responseModel({ (result) in
+                            b2 = true
+                            
+                            if b1 {
+                                exception.fulfill()
+                            }
+                        })
+                        return
+                    }
+                }
+                XCTAssert(false, "tasks complete error")
+            case .Failure :
+                XCTAssert(false, "tasks complete error")
+            }
+        }
+        self.waitForExpectationsWithTimeout(10) { (error) in
+            if let error = error {
+                XCTFail(error.localizedDescription)
+            }
+        }
+    }
 }

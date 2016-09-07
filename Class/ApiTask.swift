@@ -124,4 +124,22 @@ public class ApiTask: NSObject {
         return (true, nil)
     }
     
+    public func cancel() -> Self {
+        request?.cancel()
+        return self
+    }
+    
+    public func resume() -> Self {
+        if request?.task.state == .Suspended {
+            request?.resume()
+        }
+        return self
+    }
+    
+    public func suspend() -> Self {
+        if request?.task.state == .Running {
+            request?.suspend()
+        }
+        return self
+    }
 }
