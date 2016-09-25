@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import DDFileCache
+//import DDFileCache
 
-public class ApiTaskConfig<M, S:ModelSerializer where S.ModelType == M>: NSObject {
+open class ApiTaskConfig<M, S:ModelSerializer>: NSObject where S.ModelType == M {
     var serializer: S
     var cache: ApiCacheProtocol?
     
@@ -20,13 +20,38 @@ public class ApiTaskConfig<M, S:ModelSerializer where S.ModelType == M>: NSObjec
 }
 
 public struct ApiTaskCache {
-    public static let defaultCache = DDCache(name: "ApiTask")
+    public static let defaultCache = ApiDefaultCache() //DDCache(name: "ApiTask")
 }
 
 public func ApiTaskDefaultYYConfig<M>() -> ApiTaskConfig<M, ApiJsonModelSerializer<M>> {
     return ApiTaskConfig(serializer: ApiJsonModelSerializer<M>(), cache: ApiTaskCache.defaultCache)
 }
 
-extension DDCache: ApiCacheProtocol {
+//extension DDCache: ApiCacheProtocol {
+//    
+//}
+
+public class ApiDefaultCache: NSObject, ApiCacheProtocol {
+    
+    private let cache = NSCache<NSString, AnyObject>()
+    
+    public func object(forKey key: String) -> AnyObject? {
+        return cache.object(forKey: key as NSString)
+    }
+    public func setObject(_ obj: AnyObject?, forKey key: String, timeInterval: TimeInterval) {
+        if let obj = obj {
+            cache.setObject(obj, forKey: key as NSString)
+        }
+        else {
+            removeObject(forKey: key)
+        }
+    }
+    public func removeObject(forKey key: String) {
+        cache.removeObject(forKey: key as NSString)
+    }
+    
+    public func removeAllObjects() {
+        cache.removeAllObjects()
+    }
     
 }

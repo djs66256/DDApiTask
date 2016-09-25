@@ -24,10 +24,10 @@ class YYModelTests: XCTestCase {
     }
     
     func testYYModel() {
-        if let path = NSBundle.mainBundle().pathForResource("UserTask", ofType: "json") {
-            if let data = NSData(contentsOfFile: path) {
+        if let path = Bundle.main.path(forResource: "UserTask", ofType: "json") {
+            if let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
                 do {
-                    let dict = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+                    let dict = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     if let user = User.yy_modelWithJSON(dict["data"]) {
                         let json = JSON(dict)
                         XCTAssert(user.id == json["data"]["id"].string, "")

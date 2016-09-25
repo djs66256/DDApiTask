@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class UserTask: ApiJsonYYModelTask<User> {
+open class UserTask: ApiJsonYYModelTask<User> {
     
     public override init() {
         super.init()

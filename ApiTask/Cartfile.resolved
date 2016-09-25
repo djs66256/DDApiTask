@@ -1,0 +1,4 @@
+git "https://github.com/Alamofire/Alamofire.git" "4.0.1"
+git "https://github.com/djs66256/DDFileCache.git" "0.0.2"
+git "https://github.com/SwiftyJSON/SwiftyJSON.git" "3.0.0"
+git "https://github.com/ibireme/YYModel.git" "1.0.4"

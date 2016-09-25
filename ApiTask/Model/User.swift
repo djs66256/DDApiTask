@@ -9,12 +9,12 @@
 import UIKit
 
 @objc public enum Gender: Int {
-    case Female = 2
-    case Male = 1
+    case female = 2
+    case male = 1
 }
 
-@objc public class User: NSObject {
+@objc open class User: NSObject {
     @objc var id: String?
     @objc var name: String?
-    @objc var gender: Gender = .Male
+    @objc var gender: Gender = .male
 }

@@ -10,9 +10,9 @@ import UIKit
 
 public protocol ApiCacheProtocol {
     
-    func objectForKey(key: String) -> AnyObject?
-    func setObject(obj: AnyObject?, forKey key: String, timeInterval: NSTimeInterval)
-    func removeObjectForKey(key: String)
+    func object(forKey key: String) -> AnyObject?
+    func setObject(_ obj: AnyObject?, forKey key: String, timeInterval: TimeInterval)
+    func removeObject(forKey key: String)
     
     func removeAllObjects()
 }

@@ -10,30 +10,30 @@ import UIKit
 import Alamofire
 
 public enum ApiResult<T> {
-    case Success(T)
-    case SuccessArray([T])
-    case Failure(NSError)
+    case success(T)
+    case successArray([T])
+    case failure(Error)
 }
 
 public protocol ModelSerializer {
     associatedtype ModelType
     
-    func modelSerialize(json: [NSObject: NSObject]) -> ApiResult<ModelType>
+    func modelSerialize(_ json: [NSObject: NSObject]) -> ApiResult<ModelType>
 }
 
 public let ApiTaskErrorDomain = "com.api.task"
 
 public let ApiTaskDataErrorCode = -666
 
-public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType == T>: ApiTask {
-    private var config: ApiTaskConfig<T, M>
-    public var localCacheEnable = false
-    public var expireTimeInterval: NSTimeInterval = 24*3600
+open class ApiJsonModelTask <T: AnyObject, M:ModelSerializer>: ApiTask where M.ModelType == T {
+    fileprivate var config: ApiTaskConfig<T, M>
+    open var localCacheEnable = false
+    open var expireTimeInterval: TimeInterval = 24*3600
     
-    public var cacheKey: String? {
+    open var cacheKey: String? {
         get {
-            let data = try? NSJSONSerialization.dataWithJSONObject(self.parameters ?? [:], options: NSJSONWritingOptions(rawValue: 0))
-            let str = "\(self.path) => \(data ?? "")"
+            let data = try? JSONSerialization.data(withJSONObject: self.parameters, options: JSONSerialization.WritingOptions(rawValue: 0))
+            let str = "\(self.path) => \(data)"
             return str
         }
     }
@@ -42,26 +42,26 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         self.config = config
     }
     
-    public func cache(enable: Bool, timeInterval: NSTimeInterval = 24*3600) -> Self {
+    open func cache(_ enable: Bool, timeInterval: TimeInterval = 24*3600) -> Self {
         self.localCacheEnable = enable
         self.expireTimeInterval = timeInterval
         return self
     }
     
-    public func clearCache() -> Self {
+    open func clearCache() -> Self {
         if let key = cacheKey {
-            config.cache?.removeObjectForKey(key)
+            config.cache?.removeObject(forKey: key)
         }
         return self
     }
     
     // need buildCache(true)
-    public func cacheModel(result: (T)->Void) -> Self {
+    open func cacheModel(_ result: (T)->Void) -> Self {
         if localCacheEnable && method == .GET {
-            if let key = cacheKey, data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
+            if let key = cacheKey, let data = config.cache?.object(forKey: key) as? [NSObject: NSObject] {
                 let r = config.serializer.modelSerialize(data)
                 switch r {
-                case .Success(let model):
+                case .success(let model):
                     result(model)
                 default:
                     break
@@ -71,12 +71,12 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         return self
     }
     
-    public func cacheModelArray(result: ([T])->Void) -> Self {
+    open func cacheModelArray(_ result: ([T])->Void) -> Self {
         if localCacheEnable && method == .GET {
-            if let key = cacheKey, data = config.cache?.objectForKey(key) as? [NSObject: NSObject] {
+            if let key = cacheKey, let data = config.cache?.object(forKey: key) as? [NSObject: NSObject] {
                 let r = config.serializer.modelSerialize(data)
                 switch r {
-                case .SuccessArray(let model):
+                case .successArray(let model):
                     result(model)
                 default:
                     break
@@ -86,40 +86,40 @@ public class ApiJsonModelTask <T: AnyObject, M:ModelSerializer where M.ModelType
         return self
     }
     
-    public func responseModel<M:ModelSerializer where M.ModelType == T>(serializer: M, result: (ApiResult<T>) -> Void) -> Self {
+    open func responseModel(_ serializer: M, result: @escaping (ApiResult<T>) -> Void) -> Self {
         let (validated, error) = validate()
         if !validated, let error = error {
-            result(.Failure(error))
+            result(.failure(error))
         }
-        else if let request = request {
-            request.responseJSON(completionHandler: {(response: Response<AnyObject, NSError>) in
+        else if let request = self.request {
+            request.responseJSON { response in
                 switch response.result {
-                case .Success(let json):
+                case .success(let json):
                     if let dict = json as? [NSObject: NSObject] {
                         if self.localCacheEnable && self.method == .GET {
                             if let key = self.cacheKey {
-                                self.config.cache?.setObject(dict, forKey: key, timeInterval: self.expireTimeInterval)
+                                self.config.cache?.setObject(dict as AnyObject?, forKey: key, timeInterval: self.expireTimeInterval)
                             }
                         }
                         result(serializer.modelSerialize(dict))
                     }
                     else {
                         let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "数据结构错误"])
-                        result(.Failure(error))
+                        result(.failure(error))
                     }
-                case .Failure(let error):
-                    result(.Failure(error))
+                case .failure(let error):
+                    result(.failure(error))
                 }
-            })
+            }
         }
         else {
-            let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSURLLocalizedLabelKey: "未构造请求"])
-            result(.Failure(error))
+            let error = NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [URLResourceKey.localizedLabelKey: "未构造请求"])
+            result(.failure(error))
         }
         return self
     }
     
-    public func responseModel(result: (ApiResult<T>) -> Void) -> Self {
+    open func responseModel(_ result: @escaping (ApiResult<T>) -> Void) -> Self {
         return responseModel(config.serializer, result: result)
     }
     

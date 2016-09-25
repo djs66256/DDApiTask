@@ -7,51 +7,52 @@
 //
 
 import UIKit
+import Alamofire
 
 public enum ApiGroupResult {
-    case Success([ApiTask])
-    case Failure([ApiTask], ApiTask, NSError)
+    case success([ApiTask])
+    case failure([ApiTask], ApiTask, Error)
 }
 
-public class ApiGroupTask: NSObject {
-    public var tasks: [ApiTask]
-    public var timeout: NSTimeInterval = 30
+open class ApiGroupTask: NSObject {
+    open var tasks: [ApiTask]
+    open var timeout: TimeInterval = 30
     
     public init(tasks: [ApiTask]) {
         self.tasks = tasks
     }
     
-    public func timeout(timeout: NSTimeInterval) -> Self {
+    open func timeout(_ timeout: TimeInterval) -> Self {
         self.timeout = timeout
         return self
     }
 
-    public func responseTasks(result: (ApiGroupResult)->Void) -> Self {
+    open func responseTasks(_ result: @escaping (ApiGroupResult)->Void) -> Self {
         return self
     }
     
-    public func resume() -> Self {
+    open func resume() -> Self {
         for task in tasks {
-            task.resume()
+            let _ = task.resume()
         }
         return self
     }
     
-    public func suspend() -> Self {
+    open func suspend() -> Self {
         for task in tasks {
-            task.suspend()
+            let _ = task.suspend()
         }
         return self
     }
     
-    public func cancel() -> Self {
+    open func cancel() -> Self {
         for task in tasks {
-            task.cancel()
+            let _ = task.cancel()
         }
         return self
     }
     
-    public func validate() -> (Bool, NSError?, ApiTask?) {
+    open func validate() -> (Bool, NSError?, ApiTask?) {
         for task in tasks {
             let (b, error) = task.validate()
             if !b, let error = error {
@@ -62,13 +63,13 @@ public class ApiGroupTask: NSObject {
     }
 }
 
-public class ApiBatchTask: ApiGroupTask {
-    private var count: Int = 0
+open class ApiBatchTask: ApiGroupTask {
+    fileprivate var count: Int = 0
     
-    public override func responseTasks(result: (ApiGroupResult)->Void) -> Self {
+    open override func responseTasks(_ result: @escaping (ApiGroupResult)->Void) -> Self {
         let (b, error, task) = validate()
         if !b, let error = error, let task = task {
-            result(.Failure(tasks, task, error))
+            result(.failure(tasks, task, error))
             return self
         }
         
@@ -79,41 +80,41 @@ public class ApiBatchTask: ApiGroupTask {
         return self
     }
     
-    private func responseTask(task: ApiTask, result: (ApiGroupResult)->Void) {
+    fileprivate func responseTask(_ task: ApiTask, result: @escaping (ApiGroupResult)->Void) {
         guard let request = task.request else {
             for task2 in tasks {
-                task2.cancel()
+                let _ = task2.cancel()
             }
             let error =  NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "请求参数错误"])
-            result(.Failure(self.tasks, task, error))
+            result(.failure(self.tasks, task, error))
             return
         }
         
-        request.response(completionHandler: { (request, response, data, error) in
+        request.response { response in
             self.count -= 1
             
-            if let error = error {
+            if let error = response.error {
                 for task2 in self.tasks {
                     if task != task2 {
-                        task2.cancel()
+                        let _ = task2.cancel()
                     }
                 }
-                result(.Failure(self.tasks, task, error))
+                result(.failure(self.tasks, task, error))
             }
             else if self.count <= 0 {
-                result(.Success(self.tasks))
+                result(.success(self.tasks))
             }
-        })
+        }
     }
 }
 
-public class ApiChainTask: ApiGroupTask {
-    private var index = 0
+open class ApiChainTask: ApiGroupTask {
+    fileprivate var index = 0
     
-    public override func responseTasks(result: (ApiGroupResult)->Void) -> Self {
+    open override func responseTasks(_ result: @escaping (ApiGroupResult)->Void) -> Self {
         let (b, error, task) = validate()
         if !b, let error = error, let task = task {
-            result(.Failure(tasks, task, error))
+            result(.failure(tasks, task, error))
             return self
         }
         
@@ -122,26 +123,26 @@ public class ApiChainTask: ApiGroupTask {
         return self
     }
     
-    private func responseNextTask(result: (ApiGroupResult)->Void) {
+    fileprivate func responseNextTask(_ result: @escaping (ApiGroupResult)->Void) {
         guard index < self.tasks.count else {
-            return result(.Success(self.tasks))
+            return result(.success(self.tasks))
         }
         
         let task = self.tasks[index]
         guard let request = task.request else {
             let error =  NSError(domain: ApiTaskErrorDomain, code: ApiTaskDataErrorCode, userInfo: [NSLocalizedDescriptionKey: "请求参数错误"])
-            return result(.Failure(self.tasks, task, error))
+            return result(.failure(self.tasks, task, error))
         }
         
-        request.response(completionHandler: { (request, response, data, error) in
-            if let error = error {
-                result(.Failure(self.tasks, task, error))
+        request.response { response in
+            if let error = response.error {
+                result(.failure(self.tasks, task, error))
             }
             else {
                 self.index += 1
                 self.responseNextTask(result)
             }
             
-        })
+        }
     }
 }

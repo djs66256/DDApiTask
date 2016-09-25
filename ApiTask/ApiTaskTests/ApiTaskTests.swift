@@ -8,7 +8,7 @@
 
 import XCTest
 import SwiftyJSON
-import DDFileCache
+//import DDFileCache
 @testable import ApiTask
 
 let config = ApiTaskConfig(serializer: ApiJsonModelSerializer<User>(), cache: DDCache(name: "test"))
@@ -20,9 +20,9 @@ class DDRequestTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let path = NSBundle.mainBundle().pathForResource("UserTask", ofType: "json")
-        let data = NSData(contentsOfFile: path!)
-        let dict = try? NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+        let path = Bundle.main.path(forResource: "UserTask", ofType: "json")
+        let data = try? Data(contentsOf: URL(fileURLWithPath: path!))
+        let dict = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
         self.json = JSON(dict!)
     }
     
@@ -32,7 +32,7 @@ class DDRequestTests: XCTestCase {
     }
     
     func testRequest() {
-        let exception = self.expectationWithDescription("test request")
+        let exception = self.expectation(description: "test request")
         UserTask(config: config).mock(true).responseModel { (result) in
             switch result {
             case .Success(let user):
@@ -46,7 +46,7 @@ class DDRequestTests: XCTestCase {
             }
             exception.fulfill()
         }
-        self.waitForExpectationsWithTimeout(10) { (error) in
+        self.waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail(error.localizedDescription)
             }
@@ -54,7 +54,7 @@ class DDRequestTests: XCTestCase {
     }
     
     func testRequestCache() {
-        let exception = self.expectationWithDescription("test cache")
+        let exception = self.expectation(description: "test cache")
         UserTask(config: config).clearCache().cache(true).mock(true).responseModel( {(result) in
             UserTask(config: config).cache(true).cacheModel({ (user) in
                 XCTAssert(user.id == self.json?["data"]["id"].string, "")
@@ -68,7 +68,7 @@ class DDRequestTests: XCTestCase {
             })
             }
         )
-        self.waitForExpectationsWithTimeout(10) { (error) in
+        self.waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail(error.localizedDescription)
             }
@@ -76,7 +76,7 @@ class DDRequestTests: XCTestCase {
     }
     
     func testBatchRequest() {
-        let exception = self.expectationWithDescription("batch request error")
+        let exception = self.expectation(description: "batch request error")
         ApiBatchTask(tasks: [UserTask(config: config).mock(true), UserTask(config: config).mock(true)]).responseTasks { (result) in
             switch result {
             case .Success(let tasks):
@@ -106,7 +106,7 @@ class DDRequestTests: XCTestCase {
                 XCTAssert(false, "tasks complete error")
             }
         }
-        self.waitForExpectationsWithTimeout(10) { (error) in
+        self.waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail(error.localizedDescription)
             }
@@ -114,7 +114,7 @@ class DDRequestTests: XCTestCase {
     }
     
     func testChainRequest() {
-        let exception = self.expectationWithDescription("batch request error")
+        let exception = self.expectation(description: "batch request error")
         ApiChainTask(tasks: [UserTask(config: config).mock(true), UserTask(config: config).mock(true)]).responseTasks { (result) in
             switch result {
             case .Success(let tasks):
@@ -144,7 +144,7 @@ class DDRequestTests: XCTestCase {
                 XCTAssert(false, "tasks complete error")
             }
         }
-        self.waitForExpectationsWithTimeout(10) { (error) in
+        self.waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 XCTFail(error.localizedDescription)
             }

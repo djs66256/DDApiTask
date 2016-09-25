@@ -13,11 +13,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ApiJsonYYModelTask<User>()
+        let _ = ApiJsonYYModelTask<User>()
             .method(.POST)
-            .URL("user", baseURL: NSURL(string: "http://www.baidu.com")!)
-            .parameter("id", "12")
-            .parameters(["key": "value"])
+            .URL("user", baseURL: URL(string: "http://www.baidu.com")!)
+            .parameter("id", "12" as NSString)
+            .parameters(["key": "value" as NSString])
             .headers(["Authorization": "xxfwqwefq2efiwefo"])
             .cache(true)   // 本地缓存
             .cacheModel({ (user) in     // 获取本地缓存
@@ -25,9 +25,9 @@ class ViewController: UIViewController {
             })
             .responseModel ({ (result) in
                 switch result {
-                case .Success(let user):
+                case .success(let user):
                     NSLog(user.description)
-                case .Failure(let error):
+                case .failure(let error):
                     NSLog(error.localizedDescription)
                 default:
                     break

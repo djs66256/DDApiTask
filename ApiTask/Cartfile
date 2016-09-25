@@ -1,0 +1,6 @@
+git "https://github.com/ibireme/YYModel.git"
+git "https://github.com/Alamofire/Alamofire.git"
+git "https://github.com/SwiftyJSON/SwiftyJSON.git"
+
+git "https://github.com/djs66256/DDFileCache.git"
+

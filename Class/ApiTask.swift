@@ -13,24 +13,25 @@ public enum Method: String {
     case OPTIONS, GET, HEAD, POST, PUT, PATCH, DELETE, TRACE, CONNECT
 }
 
-public class ApiTask: NSObject {
+open class ApiTask: NSObject {
     // You can also override the getter to dynamic build it!
-    public var method: Method = .GET
-    public var parameters = [String: AnyObject]()
-    public var parameterEncoding: Alamofire.ParameterEncoding = .URL
-    public var headers = [String: String]()
-    public var baseURL: NSURL?
-    public var path: String = ""
+    open var method: Method = .GET
+    open var parameters = [String: AnyObject]()
+    open var parameterEncoding = Alamofire.URLEncoding.default
+    open var headers = [String: String]()
+    open var baseURL: Foundation.URL?
+    open var path: String = ""
     
     // MARK: - MOCK
-    public var mock: Bool = false
-    public var baseMockURL = NSBundle.mainBundle().bundleURL
-    public var mockPath: String?
+    open var mock: Bool = false
+    open var baseMockURL = Bundle.main.bundleURL
+    open var mockPath: String?
     
-    var request: Request? {
+    var request: Alamofire.DataRequest? {
         get {
             if let url = self.URL {
-                return Alamofire.request(Alamofire.Method(rawValue:self.method.rawValue)!, url, parameters: self.parameters, encoding: self.parameterEncoding, headers: self.headers)
+                return Alamofire.request(url, method: Alamofire.HTTPMethod(rawValue: self.method.rawValue)!, parameters: self.parameters, encoding: self.parameterEncoding, headers: self.headers)
+//                return Alamofire.request(Alamofire.Method(rawValue:self.method.rawValue)!, url, parameters: self.parameters, encoding: self.parameterEncoding, headers: self.headers)
             }
             else {
                 return nil
@@ -42,72 +43,72 @@ public class ApiTask: NSObject {
         super.init()
     }
     
-    private var URL: NSURL? {
+    fileprivate var URL: Foundation.URL? {
         get {
             if mock && mockPath != nil {
-                return NSURL(string: mockPath!, relativeToURL: baseMockURL)
+                return Foundation.URL(string: mockPath!, relativeTo: baseMockURL)
             }
             else {
                 if let baseURL = self.baseURL {
-                    let url = NSURL(string: self.path, relativeToURL: baseURL)
+                    let url = Foundation.URL(string: self.path, relativeTo: baseURL)
                     return url
                 }
                 else {
-                    return NSURL()
+                    return Foundation.URL(string: "")
                 }
             }
         }
     }
     
-    public func method(method: Method) -> Self {
+    open func method(_ method: Method) -> Self {
         self.method = method
         return self
     }
     
-    public func parameters(parameters: [String: AnyObject]?) -> Self {
+    open func parameters(_ parameters: [String: AnyObject]?) -> Self {
         if let parameters = parameters {
             for (key, value) in parameters {
-                parameter(key, value)
+                let _ = parameter(key, value)
             }
         }
         return self
     }
     
-    public func parameter(key: String, _ value: AnyObject) -> Self {
+    open func parameter(_ key: String, _ value: AnyObject) -> Self {
         self.parameters[key] = value
         return self
     }
     
-    public func headers(headers: [String: String]?) -> Self {
+    open func headers(_ headers: [String: String]?) -> Self {
         if let headers = headers {
             for (key, value) in headers {
-                header(key, value)
+                let _ = header(key, value)
             }
         }
         return self
     }
     
-    public func header(key: String, _ value: String) -> Self {
+    open func header(_ key: String, _ value: String) -> Self {
         self.headers[key] = value
         return self
     }
     
-    public func URL(path: String, baseURL: NSURL) -> Self {
+    open func URL(_ path: String, baseURL: Foundation.URL) -> Self {
         self.path = path
         self.baseURL = baseURL
         return self
     }
     
-    public func mock(mock: Bool, mockPath: String? = nil, baseMockURL: NSURL? = nil) -> Self {
+    open func mock(_ mock: Bool, mockPath: String? = nil, baseMockURL: Foundation.URL? = nil) -> Self {
         self.mock = mock
-        self.mockPath = mockPath ?? "\(self.dynamicType).json"
+        self.mockPath = mockPath ?? "\(type(of: self)).json"
         if let baseMockURL = baseMockURL {
             self.baseMockURL = baseMockURL
         }
         return self
     }
     
-    public func validate() -> (Bool, NSError?) {
+    open func validate() -> (Bool, NSError?) {
         let (validated, errStr) = validateString()
         if validated {
                 return (validated, nil)
@@ -120,24 +121,24 @@ public class ApiTask: NSObject {
         }
     }
     
-    public func validateString() -> (Bool, String?) {
+    open func validateString() -> (Bool, String?) {
         return (true, nil)
     }
     
-    public func cancel() -> Self {
+    open func cancel() -> Self {
         request?.cancel()
         return self
     }
     
-    public func resume() -> Self {
-        if request?.task.state == .Suspended {
+    open func resume() -> Self {
+        if request?.task?.state == .suspended {
             request?.resume()
         }
         return self
     }
     
-    public func suspend() -> Self {
-        if request?.task.state == .Running {
+    open func suspend() -> Self {
+        if request?.task?.state == .running {
             request?.suspend()
         }
         return self
